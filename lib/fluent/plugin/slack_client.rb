@@ -55,6 +55,7 @@ module Fluent
         req['Host'] = endpoint.host
         req['Accept'] = 'application/json; charset=utf-8'
         req['User-Agent'] = 'fluent-plugin-slack'
+        req['Content-Type'] = 'application/json; charset=utf-8'
         req.body = encode_body(params)
 
         res = http.request(req)
