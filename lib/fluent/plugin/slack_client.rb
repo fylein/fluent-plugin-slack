@@ -55,7 +55,7 @@ module Fluent
         req['Host'] = endpoint.host
         req['Accept'] = 'application/json; charset=utf-8'
         req['User-Agent'] = 'fluent-plugin-slack'
-        req['Content-Type'] = 'application/json; charset=utf-8'
+        req['Content-Type'] = content_type
         req.body = encode_body(params)
 
         res = http.request(req)
@@ -63,6 +63,10 @@ module Fluent
       end
 
       private
+
+      def content_type
+        'application/x-www-form-urlencoded; charset=utf-8'
+      end
 
       def encode_body(params)
         raise NotImplementedError
@@ -143,6 +147,10 @@ module Fluent
 
       private
 
+      def content_type
+        'application/json; charset=utf-8'
+      end
+
       def encode_body(params = {})
         # https://api.slack.com/docs/formatting
         to_json_with_scrub!(params).gsub(/&/, '&amp;').gsub(/</, '&lt;').gsub(/>/, '&gt;')
@@ -176,6 +184,10 @@ module Fluent
       end
 
       private
+
+      def content_type
+        'text/plain; charset=utf-8'
+      end
 
       def slackbot_endpoint(params)
         endpoint.dup.tap {|e| e.query += "&channel=#{URI.encode(params[:channel])}" }
